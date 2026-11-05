@@ -1,0 +1,17 @@
+{
+  "name": "contextguard-forge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@forge/api": "^8.4.0",
+    "@forge/events": "^3.0.9",
+    "@forge/resolver": "^2.0.2"
+  }
+}

@@ -1,0 +1,57 @@
+modules:
+  jira:issuePanel:
+    - key: contextguard-issue-panel
+      title: ContextGuard AI — Teamwork Graph & Pre-Deploy Intelligence
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-panel-icon.svg
+      resource: main-resource
+      resolver:
+        function: resolver-fn
+
+  rovo:agent:
+    - key: contextguard-rovo-agent
+      name: ContextGuard Rovo Agent
+      description: Autonomous agent that traverses Atlassian Teamwork Graph to prevent architectural drift, breaking API regressions, and duplicate work across Jira and Confluence.
+      conversationStarters:
+        - "Check if this Jira issue conflicts with recent Confluence architectural decision records (ADRs)"
+        - "Run Teamwork Graph impact analysis before merging PR"
+        - "Find past incidents related to this service component"
+      skills:
+        - contextguard-teamwork-graph-skill
+        - contextguard-mcp-lookup-skill
+
+  rovo:skill:
+    - key: contextguard-teamwork-graph-skill
+      name: Teamwork Graph Cross-Silo Traversal
+      description: Queries Teamwork Graph API to link goals, issues, Confluence specs, and PRs.
+      function: teamwork-graph-fn
+    - key: contextguard-mcp-lookup-skill
+      name: Atlassian MCP Context Server
+      description: Exposes Model Context Protocol (MCP) tool endpoints for developer IDE integration.
+      function: mcp-server-fn
+
+  function:
+    - key: resolver-fn
+      handler: index.handler
+    - key: teamwork-graph-fn
+      handler: index.teamworkGraphHandler
+    - key: mcp-server-fn
+      handler: index.mcpServerHandler
+
+resources:
+  - key: main-resource
+    path: static/dist
+    tunnel:
+      port: 3000
+
+app:
+  id: ari:cloud:ecosystem::app/contextguard-ai-codegeist-2026
+  name: ContextGuard AI
+
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+    - read:confluence-content.all
+    - read:graph:jira
+    - read:graph:confluence
+    - storage:app
